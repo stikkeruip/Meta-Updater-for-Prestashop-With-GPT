@@ -2,6 +2,7 @@ import os
 import requests
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
+from requests.auth import HTTPBasicAuth
 
 # Load environment variables from .env file
 load_dotenv()
@@ -12,8 +13,8 @@ api_key = os.getenv('PRESTASHOP_API_KEY')
 
 
 def update_product_meta(product_id, meta_title, meta_description, link_rewrite):
-    # Construct the product URL with the API key as a parameter
-    product_url = f"{prestashop_url}/products/{product_id}?ws_key={api_key}"
+    # Construct the product URL
+    product_url = f"{prestashop_url}/products/{product_id}"
 
     # Headers for request
     headers = {
@@ -21,8 +22,8 @@ def update_product_meta(product_id, meta_title, meta_description, link_rewrite):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
     }
 
-    # Fetch the product data without using HTTPBasicAuth
-    response = requests.get(product_url, headers=headers)
+    # Fetch the product data using HTTPBasicAuth
+    response = requests.get(product_url, headers=headers, auth=HTTPBasicAuth(api_key, ''))
 
     if response.status_code == 200:
         # Parse XML response
@@ -37,8 +38,8 @@ def update_product_meta(product_id, meta_title, meta_description, link_rewrite):
         # Convert updated XML back to string
         updated_data = ET.tostring(root)
 
-        # Send the PUT request to update the product without using HTTPBasicAuth
-        update_response = requests.put(product_url, data=updated_data, headers=headers)
+        # Send the PUT request to update the product using HTTPBasicAuth
+        update_response = requests.put(product_url, data=updated_data, headers=headers, auth=HTTPBasicAuth(api_key, ''))
 
         if update_response.status_code == 200:
             print(f"Product {product_id} updated successfully!")
