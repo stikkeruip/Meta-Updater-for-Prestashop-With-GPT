@@ -1,0 +1,28 @@
+# Ignore all hidden files and directories (like .idea) except .gitignore
+.*
+!.gitignore
+
+# Ignore IDE-specific files (e.g., JetBrains project settings)
+.idea/
+*.iml
+
+# Ignore Python-specific cache files
+__pycache__/
+*.py[cod]
+
+# Ignore logs, temporary files, and miscellaneous files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore sensitive files, API keys, credentials, etc. (Add custom sensitive files here)
+config.json
+.env
+
+# Add any other files or directories specific to your project that you don't want to push
+
